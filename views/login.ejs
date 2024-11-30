@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="/img/logo.png">
+    <link rel="stylesheet" href="/css/login.css">
+    <title>Yorkut</title>
+</head>
+<body>
+    <div id="container">
+        <header>
+            <h1>Yorkut</h1>
+        </header>
+                
+        <form action="/cadastroelogin" method="post">
+            <img src="/img/logo.png" alt="logo">
+            <% if (typeof msg === 'string') {%>
+                <p><%= msg %></p>
+            <%}%>
+            <input type="text" name="username">
+            <input type="password" name="senha">
+            <div id="botoes">
+                <button name="action" value="login">Login</button>
+                <button name="action" value="cadastro">Cadastro</button>
+            </div>
+        </form>
+        <footer>
+            <p>Fernando Barreto e Nelson Netto</p>
+        </footer>
+    </div>
+</body>
+</html>
