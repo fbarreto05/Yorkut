@@ -56,7 +56,7 @@ router.post('/cadastroelogin', async function(req, res){
             {
                 if(userpassword == user.password)
                 {
-                    res.redirect('/home')
+                    res.redirect(`/home/${user.id}`)
                 }
                 else
                 {

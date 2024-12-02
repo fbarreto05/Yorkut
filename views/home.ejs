@@ -12,8 +12,9 @@
         <div id="sidebar">
             <div id="options">
                 <img src="/img/logo.png" alt="logo">
+                <a href="/home/<%= id %>">Inicio</a>
                 <a href="">Perfil</a>
-                <a href="">Pedidos de amizade</a>
+                <a href="/friendreq/<%= id %>">Pedidos de amizade</a>
                 <a href="">Solicitações de grupo</a>
                 <a href="">Sair</a>
             </div>
@@ -21,21 +22,52 @@
     
         <div id="posts">
             <div id="postlist">
-                    
+                <% if (plist) {%>
+                        <% for(i=plist.length-1; i>0; i--){%>
+                            <% if (plist[i].authorid == id) {%>
+                                <div style="display: block; padding: 20px; font-size: 20px;" class="post" id="post<%=i%>">
+                                    <p style="display: flex; justify-content: end;"><%= plist[i].author %>:</p>
+                                    <p style="display: flex; justify-content: end;"><%= plist[i].content %></p>
+                                </div>
+                            <% } %>
+                            <% if (plist[i].authorid != id) {%>
+                                <div style="display: block; padding: 20px; font-size: 20px;" class="post" id="post<%=i%>">
+                                    <p style="display: flex; justify-content: start;"><%= plist[i].author %>:</p>
+                                    <p style="display: flex; justify-content: start;"><%= plist[i].content %></p>
+                                </div>
+                            <% } %>
+                        <% } %>
+
+
+                <% } else { %>
+                    <p>Não há postagens disponíveis!</p>
+                <% } %>
             </div>
-            <form>
+            <form action="/home/<%= id %>/addpost/?destination=<%= destinationtp.destination %>&tp=<%=destinationtp.tp%>" method="post">
                 <input type="text" name="mensagem">
                 <button>Enviar</button>
             </form>
         </div>
         <div id="areas">
             <div id="amigos">
-                <form>
+                <h1></h1>
+                <% if (typeof msg === 'string') {%>
+                    <p><%= msg %></p>
+                <%}%>
+                <form action="/home/<%= id %>/searchfriend" method="post">
                     <input type="text" name="username">
                     <button>Adicionar</button>
-                </form>    
+                </form>
                 <div id="userlist">
-                    
+                    <% if (flist) {%>
+                        <% for(i=0; i<flist.length; i++){%>
+                            <div class="friend" id="friend<%=i%>">
+                                <a href="/home/<%= id %>/?friend=<%= flist[i].id %>"><%= flist[i].name %></a>
+                            </div>
+                        <% } %>
+                    <% } else { %>
+                        <p>Não há amigos disponíveis!</p>
+                    <% } %>
                 </div>
             </div>
             <div id="grupos">

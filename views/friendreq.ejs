@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="/img/logo.png">
+    <link rel="stylesheet" href="/css/friendreq.css">
+    <title>Yorkut</title>
+</head>
+<body>
+    <div id="container">
+        <div id="sidebar">
+            <div id="options">
+                <img src="/img/logo.png" alt="logo">
+                <a href="/home/<%= id %>">Inicio</a>
+                <a href="">Perfil</a>
+                <a href="/friendreq/<%= id %>">Pedidos de amizade</a>
+                <a href="">Solicitações de grupo</a>
+                <a href="">Sair</a>
+            </div>
+        </div>
+    
+        <div id="friendreq">
+            <div id="reqlist">
+                    <% if (typeof msg === 'string') {%>
+                        <p><%= msg %></p>
+                    <%}%>
+                    <% if (users) {%>
+                        <% for(i=0; i<users.length; i++){%>
+                            <div class="req" id="req<%=i%>">
+                                <p><%= users[i].name %></p>
+                                <form action="/friendreq/<%= id %>/add/?fId=<%= users[i].id %>" method="post">
+                                    <button>Aceitar</button>
+                                </form>
+                            </div>
+                        <% } %>
+                    <% } %>
+            </div>
+        </div>
+
+        <div id="areas">
+            <div id="amigos">
+                <h1></h1>
+                <% if (typeof msg === 'string') {%>
+                    <p><%= msg %></p>
+                <%}%>
+                <form action="/home/<%= id %>/searchfriend" method="post">
+                    <input type="text" name="username">
+                    <button>Adicionar</button>
+                </form>
+                <div id="userlist">
+                    
+                </div>
+            </div>
+            <div id="grupos">
+                <form>
+                    <input type="text" name="groupname">
+                    <button>Entrar</button>
+                </form> 
+                <div id="grouplist">
+
+                </div>
+
+                <div id="func">
+                    <a href="">Criar grupo</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
