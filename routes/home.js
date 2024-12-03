@@ -130,5 +130,30 @@ router.post('/:id/addpost', async function(req, res){
     res.redirect(`/home/${id}/?${tpurl}=${destination}&msg=${msg}`)
 })
 
+router.post('/:id/removeFriend', async function(req, res){
+    id = req.params.id;
+    fId = req.query.friend;
+
+    friends = await Friends.findOne({
+        where:{ [Op.or]: 
+            [{userID: fId, friendID: id}, {friendID: fId, userID: id}], status: 1}
+    })
+
+    console.log("aqui: ", friends[0])
+
+    if(friends.length == 0)
+    {
+        msg = "A amizade não foi encontrada"
+    }
+    else
+    {
+        Friends.destroy(
+            {where: {id: friends.id}}
+        )
+        msg = "Amizade removida com sucesso!"
+    }
+    res.redirect(`/home/${id}/?msg=${msg}`)
+})
+
 module.exports = router;
 

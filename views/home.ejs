@@ -13,10 +13,10 @@
             <div id="options">
                 <img src="/img/logo.png" alt="logo">
                 <a href="/home/<%= id %>">Inicio</a>
-                <a href="">Perfil</a>
+                <a href="/profile/<%= id %>">Perfil</a>
                 <a href="/friendreq/<%= id %>">Pedidos de amizade</a>
-                <a href="">Solicitações de grupo</a>
-                <a href="">Sair</a>
+                <!-- <a href="">Solicitações de grupo</a> -->
+                <a href="/">Sair</a> 
             </div>
         </div>
     
@@ -63,6 +63,9 @@
                         <% for(i=0; i<flist.length; i++){%>
                             <div class="friend" id="friend<%=i%>">
                                 <a href="/home/<%= id %>/?friend=<%= flist[i].id %>"><%= flist[i].name %></a>
+                                <form action="/home/<%= id %>/removeFriend/?friend=<%= flist[i].id %>" method="post">
+                                    <button>Remover</button>
+                                </form>
                             </div>
                         <% } %>
                     <% } else { %>
@@ -70,7 +73,7 @@
                     <% } %>
                 </div>
             </div>
-            <div id="grupos">
+            <!-- <div id="grupos">
                 <form>
                     <input type="text" name="groupname">
                     <button>Entrar</button>
@@ -82,7 +85,7 @@
                 <div id="func">
                     <a href="">Criar grupo</a>
                 </div>
-            </div>
+            </div> -->
         </div>
     </div>
 </body>

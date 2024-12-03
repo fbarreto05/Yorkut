@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" href="/img/logo.png">
-    <link rel="stylesheet" href="/css/friendreq.css">
+    <link rel="stylesheet" href="/css/profile.css">
     <title>Yorkut</title>
 </head>
 <body>
@@ -20,31 +20,22 @@
             </div>
         </div>
     
-        <div id="friendreq">
-            <div id="reqlist">
-                    <% if (typeof msgfr === 'string') {%>
-                        <p><%= msgfr %></p>
-                    <%}%>
-                    <% if (users) {%>
-                        <% for(i=0; i<users.length; i++){%>
-                            <div class="req" id="req<%=i%>">
-                                <p><%= users[i].name %></p>
-                                <form action="/friendreq/<%= id %>/add/?fId=<%= users[i].id %>" method="post">
-                                    <button>Aceitar</button>
-                                </form>
-                            </div>
-                        <% } %>
-                    <% } %>
+        <div id="profile">
+            <div id="user">
+                <img src="/img/user.png">
+                
+                <p>ID: <%= id %></p>
+                <p>Nome: <%= name %></p>
+                <p>Senha: <%= password %></p>
             </div>
         </div>
-
         <div id="areas">
             <div id="amigos">
                 <h1></h1>
                 <% if (typeof msg === 'string') {%>
                     <p><%= msg %></p>
                 <%}%>
-                <form action="/home/<%= id %>/searchfriend" method="post">
+                <form action="/profile/<%= id %>/searchfriend" method="post">
                     <input type="text" name="username">
                     <button>Adicionar</button>
                 </form>
@@ -53,7 +44,7 @@
                         <% for(i=0; i<flist.length; i++){%>
                             <div class="friend" id="friend<%=i%>">
                                 <a href="/home/<%= id %>/?friend=<%= flist[i].id %>"><%= flist[i].name %></a>
-                                <form action="/friendreq/<%= id %>/removeFriend/?friend=<%= flist[i].id %>" method="post">
+                                <form action="/profile/<%= id %>/removeFriend/?friend=<%= flist[i].id %>" method="post">
                                     <button>Remover</button>
                                 </form>
                             </div>

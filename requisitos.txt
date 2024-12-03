@@ -1,0 +1,5 @@
+R1 - Permitir o cadastro e login de usuários.
+R2 - Permitir adição e remoção de amizades.
+R3 - Permitir o envio e recebimento de mensagens.
+R4 - Permitir a visualização do perfil.
+R5 - Permitir a saída do sistema.

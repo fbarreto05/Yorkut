@@ -1,0 +1,9 @@
+1) Tema: Banco de Dados para Redes Sociais
+2) Etapas de implementação: Modelagem - disponível em modelagem.png e requisitos.txt
+                            Criação do banco de dados - disponível em models
+                            Testes e validações - testes unitários ao longo da execução
+                            Otimização e ajustes - feitos de acordo com os erros encontrados
+3) Características essenciais: Gerenciamento de perfis, postagens e interação entre usuários
+4) Requisitos técnicos: SGBD relacional (MySQL), Node.JS, framework Express, ORM (Sequelize), view engine (EJS)
+5) Considerações finais: ?
+6) Executável: disponível em index.js

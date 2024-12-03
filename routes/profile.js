@@ -9,28 +9,15 @@ const { Op } = require('sequelize');
 
 router.get('/:id', async function(req, res){
     id = req.params.id;
-    msg = req.query;
     flist = [];
-    users = [];
-    msgfr = "";
-
-    fRequests = await Friends.findAll({
-        where:{friendID: id, status: 0}
+    
+    user = await User.findOne({
+        where: {id: id}
     })
 
-    if(fRequests.length > 0)
-    {
-        users = await Promise.all(fRequests.map(async request => ({id: request.userID, 
-            name: (await User.findOne({
-                where: {id: request.userID}
-            })).name
-        })))
-    }
-    else
-    {
-        msgfr = "Não há solicitações de amizade disponíveis!"
-    }
-
+    name = user.name;
+    password = user.password
+    
     friends = await Friends.findAll({
         where:{ [Op.or]: [{userID: id}, {friendID: id}], status: 1}
     })
@@ -45,20 +32,7 @@ router.get('/:id', async function(req, res){
         })))
     }
 
-    res.render('friendreq', {id, users, msg, msgfr, flist});
-})
-
-router.post('/:id/add', async function(req, res)
-{
-    id = req.params.id;
-    fId = req.query.fId;
-
-    fRequests = await Friends.update({status: 1},
-        {where:{userID: fId, friendID: id, status: 0}
-    })
-    msg = "Solicitação aceita com sucesso!"
-
-    res.redirect(`/friendreq/${id}/?msg=${msg}`)
+    res.render('profile', {id, name, password, flist});
 })
 
 router.post('/:id/searchfriend', async function(req, res){
@@ -102,7 +76,7 @@ router.post('/:id/searchfriend', async function(req, res){
         }
     }
 
-    res.redirect(`/friendreq/${id}/?msg=${msg}`)
+    res.redirect(`/profile/${id}/?msg=${msg}`)
 })
 
 router.post('/:id/removeFriend', async function(req, res){
@@ -127,7 +101,8 @@ router.post('/:id/removeFriend', async function(req, res){
         )
         msg = "Amizade removida com sucesso!"
     }
-    res.redirect(`/friendreq/${id}/?msg=${msg}`)
+    res.redirect(`/profile/${id}/?msg=${msg}`)
 })
 
 module.exports = router;
+
