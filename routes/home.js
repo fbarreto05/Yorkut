@@ -101,6 +101,7 @@ router.post('/:id/searchfriend', async function(req, res){
 
 router.post('/:id/addpost', async function(req, res){
     id = req.params.id;
+    fId = req.query.friend;
     destination = req.query.destination;
     tp = req.query.tp;
     content = req.body.mensagem;
@@ -122,6 +123,7 @@ router.post('/:id/addpost', async function(req, res){
                 destinationtp: tp
         })
 
+        
         msg = "Postagem realizada com sucesso!"
     }
 
