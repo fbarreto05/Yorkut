@@ -146,6 +146,21 @@
         width: 90%;
         height: 300px;
         margin: auto;
+        margin-bottom: 5%;
+        a
+        {
+            width: 90%;
+            margin-top: 0px;
+        }    
+        button
+        {
+            width: 100%;
+            height: 100%;
+        }    
+    }
+    .group
+    {
+        display: flex;
     }
 
     #func
@@ -153,7 +168,6 @@
         width: 50%;
         margin: auto;
     }
-
     a
     {
         margin-top: 30px;

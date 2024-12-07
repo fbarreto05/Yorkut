@@ -3,35 +3,52 @@ const app = express();
 const router = express.Router()
 const User = require('../models/User')
 const Post = require('../models/Post')
-const Group = require('../models/Group');
-const Members = require('../models/Members');
+const Members = require('../models/Members')
+const Group = require('../models/Group')
 const Friends = require('../models/Friends');
 const { where } = require("sequelize");
 const { Op } = require('sequelize');
 
 router.get('/:id', async function(req, res){
     id = req.params.id;
-    msg = req.query;
+    msg = req.query.msg;
+    msggpl = req.query.msggp;
     flist = [];
     glist = [];
     users = [];
-    msgfr = "";
+    gRequests = [];
 
-    fRequests = await Friends.findAll({
-        where:{friendID: id, status: 0}
+    admGroups = await Group.findAll({
+        where:{admin: id}
     })
 
-    if(fRequests.length > 0)
+    for(i=0;i<admGroups.length;i++)
     {
-        users = await Promise.all(fRequests.map(async request => ({id: request.userID, 
+        gRequestsPartial = await Members.findAll({
+            where:{groupID: admGroups[i].id, status: 0}
+        })
+
+        gRequests = gRequests.concat(gRequestsPartial)
+    }
+    
+
+    if(gRequests.length > 0)
+    {
+        users = await Promise.all(gRequests.map(async request => 
+            ({
+            gid: request.groupID,
+            gname: (await Group.findOne({
+            where: {id: request.groupID}})).name,
+            id: request.memberID, 
             name: (await User.findOne({
-                where: {id: request.userID}
+                where: {id: request.memberID}
             })).name
         })))
     }
     else
     {
-        msgfr = "Não há solicitações de amizade disponíveis!"
+        msggpl = "Não há solicitações de grupo disponíveis!"
+       
     }
 
     friends = await Friends.findAll({
@@ -56,96 +73,30 @@ router.get('/:id', async function(req, res){
     {
         glist = await Promise.all(groups.map( async group => ({
             id: group.memberID,
-            gid: group.groupID,
             name: (await Group.findOne({
                 where: {id: group.groupID}
             })).name
         })))
     }
 
-    res.render('friendreq', {id, users, msg, msgfr, flist, glist});
+    res.render('groupreq', {id, users, msg, msggpl, flist, glist});
+
+    
 })
 
-router.post('/:id/add', async function(req, res)
+router.post('/:id/addGroup', async function(req, res)
 {
     id = req.params.id;
-    fId = req.query.fId;
+    gId = req.query.gId;
+    mId = req.query.mId;
 
-    fRequests = await Friends.update({status: 1},
-        {where:{userID: fId, friendID: id, status: 0}
+    gRequests = await Members.update({status: 1},
+        {where:{memberId: mId, groupID: gId, status: 0}
     })
-    msg = "Solicitação aceita com sucesso!"
+    msggp = "Solicitação aceita com sucesso!"
 
-    res.redirect(`/friendreq/${id}/?msg=${msg}`)
-})
-
-router.post('/:id/searchfriend', async function(req, res){
-    id = req.params.id;
-    username = req.body.username;
-
-    if(username.trim() == "")
-        {
-            msg = "Informe o nome do usuário antes de continuar!"
-        }
-    else
-    {
-        user = await User.findOne({
-            where: {name: username}
-        })
-    
-        if(user == null)
-            {
-                msg = "Usuário não encontrado."
-            }
-        else
-        {
-            exist = await Friends.findOne({
-                where: {userID: id,
-                        friendID: user.id
-                }
-            })
-    
-            if (exist != null)
-            {
-                msg = "O usuário já é seu amigo."
-            }
-            else
-            {
-                Friends.create({
-                    userID: id,
-                    friendID: user.id
-                })
-                msg = "Usuário adicionado com sucesso! Aguardando aceitação da solicitação."
-            }
-        }
-    }
-
-    res.redirect(`/friendreq/${id}/?msg=${msg}`)
-})
-
-router.post('/:id/removeFriend', async function(req, res){
-    id = req.params.id;
-    fId = req.query.friend;
-
-    friends = await Friends.findOne({
-        where:{ [Op.or]: 
-            [{userID: fId, friendID: id}, {friendID: fId, userID: id}], status: 1}
-    })
-
-
-    if(friends.length == 0)
-    {
-        msg = "A amizade não foi encontrada"
-    }
-    else
-    {
-        Friends.destroy(
-            {where: {id: friends.id}}
-        )
-        msg = "Amizade removida com sucesso!"
-    }
-    res.redirect(`/friendreq/${id}/?msg=${msg}`)
-})
+    res.redirect(`/groupreq/${id}/?msggp=${msggp}`)
+})  
 
 router.post('/:id/searchGroup', async function(req, res){
     id = req.params.id;
@@ -188,7 +139,7 @@ router.post('/:id/searchGroup', async function(req, res){
         }
     }
 
-    res.redirect(`/friendreq/${id}/?msggp=${msggp}`)
+    res.redirect(`/groupreq/${id}/?msggp=${msggp}`)
 })
 
 router.post('/:id/addgroup', async function(req, res)
@@ -219,7 +170,7 @@ router.post('/:id/addgroup', async function(req, res)
 
         msggp = "Grupo cadastrado com sucesso!"
     }
-    res.redirect(`/friendreq/${id}/?msggp=${msggp}`)
+    res.redirect(`/groupreq/${id}/?msggp=${msggp}`)
 })
 
 router.post('/:id/removeGroup', async function(req, res){
@@ -260,7 +211,8 @@ router.post('/:id/removeGroup', async function(req, res){
 
         msg = "Grupo removido com sucesso!"
     }
-    res.redirect(`/friendreq/${id}/?msg=${msg}`)
+    res.redirect(`/groupreq/${id}/?msg=${msg}`)
 })
+
 
 module.exports = router;

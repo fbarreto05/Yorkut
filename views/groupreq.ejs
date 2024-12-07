@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" href="/img/logo.png">
-    <link rel="stylesheet" href="/css/home.css">
+    <link rel="stylesheet" href="/css/groupreq.css">
     <title>Yorkut</title>
 </head>
 <body>
@@ -20,34 +20,25 @@
             </div>
         </div>
     
-        <div id="posts">
-            <div id="postlist">
-                <% if (plist) {%>
-                        <% for(i=plist.length-1; i>=0; i--){%>
-                            <% if (plist[i].authorid == id) {%>
-                                <div style="display: block; padding: 20px; font-size: 20px;" class="post" id="post<%=i%>">
-                                    <p style="display: flex; justify-content: end;"><%= plist[i].author %>:</p>
-                                    <p style="display: flex; justify-content: end;"><%= plist[i].content %></p>
-                                </div>
-                            <% } %>
-                            <% if (plist[i].authorid != id) {%>
-                                <div style="display: block; padding: 20px; font-size: 20px;" class="post" id="post<%=i%>">
-                                    <p style="display: flex; justify-content: start;"><%= plist[i].author %>:</p>
-                                    <p style="display: flex; justify-content: start;"><%= plist[i].content %></p>
-                                </div>
-                            <% } %>
+        <div id="groupreq">
+            <div id="reqlist">
+                    <% if (typeof msggpl === 'string') {%>
+                        <p><%= msggpl %></p>
+                    <%}%>
+                    <% if (users) {%>
+                        <% for(i=0; i<users.length; i++){%>
+                            <div class="req" id="req<%=i%>">
+                                <p><%= users[i].gname %></p>
+                                <p><%= users[i].name %></p>
+                                <form action="/groupreq/<%= id %>/addGroup/?mId=<%= users[i].id%>&gId=<%= users[i].gid%>" method="post">
+                                    <button>Aceitar</button>
+                                </form>
+                            </div>
                         <% } %>
-
-
-                <% } else { %>
-                    <p>Não há postagens disponíveis!</p>
-                <% } %>
+                    <% } %>
             </div>
-            <form action="/home/<%= id %>/addpost/?destination=<%= destinationtp.destination %>&tp=<%=destinationtp.tp%>" method="post">
-                <input type="text" name="mensagem">
-                <button>Enviar</button>
-            </form>
         </div>
+
         <div id="areas">
             <div id="amigos">
                 <h1></h1>
@@ -63,7 +54,7 @@
                         <% for(i=0; i<flist.length; i++){%>
                             <div class="friend" id="friend<%=i%>">
                                 <a href="/home/<%= id %>/?friend=<%= flist[i].id %>"><%= flist[i].name %></a>
-                                <form action="/home/<%= id %>/removeFriend/?friend=<%= flist[i].id %>" method="post">
+                                <form action="/friendreq/<%= id %>/removeFriend/?friend=<%= flist[i].id %>" method="post">
                                     <button>Remover</button>
                                 </form>
                             </div>
@@ -77,7 +68,7 @@
                 <% if (typeof msggp === 'string') {%>
                     <p><%= msggp %></p>
                 <%}%>
-                <form action="/home/<%= id %>/searchgroup" method="post">
+                <form action="/groupreq/<%= id %>/searchgroup" method="post">
                     <input type="text" name="groupname">
                     <button>Entrar</button>
                 </form> 
@@ -86,7 +77,7 @@
                         <% for(i=0; i<glist.length; i++){%>
                             <div class="group" id="group<%=i%>">
                                 <a href="/home/<%= id %>/?group=<%= glist[i].gid %>"><%= glist[i].name %></a>
-                                <form action="/home/<%= id %>/removeGroup/?group=<%= glist[i].gid %>" method="post">
+                                <form action="/groupreq/<%= id %>/removeGroup/?group=<%= glist[i].gid %>" method="post">
                                     <button>Remover</button>
                                 </form>
                             </div>
@@ -97,7 +88,7 @@
                 </div>
 
                 <div id="func">
-                    <form action="/home/<%= id %>/addgroup" method="post">
+                    <form action="/groupreq/<%= id %>/addgroup" method="post">
                         <input type="text" name="groupname">
                         <button>Criar</button>
                     </form> 

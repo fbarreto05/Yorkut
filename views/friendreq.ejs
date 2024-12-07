@@ -15,8 +15,8 @@
                 <a href="/home/<%= id %>">Inicio</a>
                 <a href="/profile/<%= id %>">Perfil</a>
                 <a href="/friendreq/<%= id %>">Pedidos de amizade</a>
-                <!-- <a href="">Solicitações de grupo</a> -->
-                <a href="/">Sair</a>
+                <a href="/groupreq/<%= id %>">Solicitações de grupo </a>
+                <a href="/">Sair</a> 
             </div>
         </div>
     
@@ -63,19 +63,36 @@
                     <% } %>
                 </div>
             </div>
-            <!-- <div id="grupos">
-                <form>
+            <div id="grupos">
+                <% if (typeof msggp === 'string') {%>
+                    <p><%= msggp %></p>
+                <%}%>
+                <form action="/friendreq/<%= id %>/searchgroup" method="post">
                     <input type="text" name="groupname">
                     <button>Entrar</button>
                 </form> 
                 <div id="grouplist">
-
+                    <% if (glist) {%>
+                        <% for(i=0; i<glist.length; i++){%>
+                            <div class="group" id="group<%=i%>">
+                                <a href="/home/<%= id %>/?group=<%= glist[i].gid %>"><%= glist[i].name %></a>
+                                <form action="/friendreeq/<%= id %>/removeGroup/?group=<%= glist[i].gid %>" method="post">
+                                    <button>Remover</button>
+                                </form>
+                            </div>
+                        <% } %>
+                    <% } else { %>
+                        <p>Não há grupos disponíveis!</p>
+                    <% } %>
                 </div>
 
                 <div id="func">
-                    <a href="">Criar grupo</a>
+                    <form action="/friendreq/<%= id %>/addgroup" method="post">
+                        <input type="text" name="groupname">
+                        <button>Criar</button>
+                    </form> 
                 </div>
-            </div> -->
+            </div>
         </div>
     </div>
 </body>
