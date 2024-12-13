@@ -6,6 +6,7 @@ const router = express.Router()
 const bodyparser = require('body-parser');
 app.use(bodyparser.urlencoded({extended: false}));
 app.use(bodyparser.json());
+const bcrypt = require('bcryptjs');
 
 router.get('/', function(req, res){
     msg = req.query;
@@ -54,7 +55,10 @@ router.post('/cadastroelogin', async function(req, res){
 
         if(user != null)
             {
-                if(userpassword == user.password)
+
+                const isMatch = await bcrypt.compare(userpassword, user.password);
+
+                if(isMatch)
                 {
                     res.redirect(`/home/${user.id}`)
                 }

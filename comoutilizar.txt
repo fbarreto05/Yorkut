@@ -1,0 +1,6 @@
+1) Alterar os dados entrada de db.js para os dados de entrada do seu mysql
+2) Criar uma tabela chamada YorkutDB
+3) Remover o comentário do comando .sync em cada model e rodar cada arquivo para criar as tabelas
+4) Rodar o comando population para popular o banco de dados
+5) Executar o comando npm install para instalar os pacotes necessários
+6) Executar o comando node index.js e conectar na porta 8080

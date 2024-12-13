@@ -65,5 +65,27 @@ html
         }
     }
    
-    
+    @media (max-width: 768px) {
+    #container {
+        width: 90%;
+    }
+
+    img {
+        width: 100px;
+        height: auto;
+        margin-top: 10%;
+        margin-bottom: 10%;
+    }
+
+    form input {
+        width: 80%;
+    }
+
+    #botoes button {
+        width: 80px;
+        height: 30px;
+        margin-right: 10px;
+        margin-left: 10px;
+    }
+}
 }
